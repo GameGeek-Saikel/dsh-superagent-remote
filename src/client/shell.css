@@ -1,0 +1,186 @@
+/*
+ * Layout for the workspace shell. Colors, radii, borders and spacing come from
+ * the DeepSeek Harness tokens the vendored panel already uses, so the chrome and
+ * the embedded Superagent page read as one surface. Only layout lives here.
+ */
+
+.sar-root { display: flex; height: 100%; min-height: 0; box-sizing: border-box; color: var(--dsw-alias-label-primary); }
+
+/* ── project pane: the harness right sidebar's chrome, the workspace rows ── */
+
+.sar-projects { box-sizing: border-box; display: flex; flex: none; flex-direction: column;
+  max-width: 60vw; min-height: 0;
+  /* The harness sidebar's own insets: 6px vertical, 8px inline, rows at 12px. */
+  padding: 6px 8px;
+  background: var(--dsw-specific-sidebar-fill, transparent); }
+
+/*
+ * The harness workspace sidebar's section header: 36px tall, the section name,
+ * a search that expands from its button, and the header actions. While the
+ * search is open the name and the actions collapse, exactly as they do there.
+ */
+.sar-proj-head { position: relative; display: flex; align-items: center; gap: 4px; flex: none;
+  box-sizing: border-box; height: 36px; margin-bottom: 4px; padding: 0 8px;
+  color: var(--dsw-alias-label-tertiary); }
+.sar-proj-section { position: relative; flex: none; max-width: 45%; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; font-size: 13px; line-height: 20px;
+  transition: max-width 180ms var(--ds-ease-in-out), margin-right 180ms var(--ds-ease-in-out),
+    opacity 120ms var(--ds-ease-in-out), transform 180ms var(--ds-ease-in-out), visibility 0s linear; }
+.sar-proj-section[data-hidden='true'] { opacity: 0; visibility: hidden; max-width: 0; margin-right: -4px;
+  transform: translate(-4px); transition-delay: 0s, 0s, 0s, 0s, 180ms; }
+.sar-proj-search { box-sizing: border-box; display: flex; align-items: center; flex: 1; min-width: 0;
+  max-width: 28px; margin-left: auto;
+  transition: max-width 180ms var(--ds-ease-in-out), padding-left 180ms var(--ds-ease-in-out); }
+.sar-proj-search[data-expanded='true'] { max-width: 100%; padding-left: 0; height: 32px; padding-right: 4px;
+  border: 0.5px solid var(--dsw-alias-border-l4); border-radius: var(--dsw-radius-md);
+  color: var(--dsw-alias-label-caption); }
+.sar-proj-icon { display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--dsw-radius-sm);
+  background: none; color: var(--dsw-alias-label-secondary); cursor: pointer; }
+.sar-proj-icon:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+.sar-proj-icon:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 1px; }
+.sar-proj-input { box-sizing: border-box; flex: 1; min-width: 0; width: 0; height: 28px; padding: 0 6px 0 2px;
+  border: 0; outline: 0; background: none; color: var(--dsw-alias-label-primary); font-size: 13px;
+  line-height: 18px; opacity: 0; pointer-events: none; transition: opacity 120ms var(--ds-ease-in-out); }
+.sar-proj-search[data-expanded='true'] .sar-proj-input { width: 100%; opacity: 1; pointer-events: auto; }
+.sar-proj-input::placeholder { color: var(--dsw-alias-label-caption); }
+.sar-proj-input::-webkit-search-cancel-button { appearance: none; }
+.sar-proj-clear { display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 24px; height: 24px; padding: 0; border: 0; border-radius: var(--dsw-radius-sm); background: none;
+  color: var(--dsw-alias-label-secondary); cursor: pointer; }
+.sar-proj-clear:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+.sar-proj-actions { display: flex; align-items: center; gap: 4px; flex: none; max-width: 60px;
+  transition: max-width 180ms var(--ds-ease-in-out), opacity 120ms var(--ds-ease-in-out),
+    transform 180ms var(--ds-ease-in-out), visibility 0s linear; }
+.sar-proj-actions[data-hidden='true'] { opacity: 0; visibility: hidden; pointer-events: none; max-width: 0;
+  transform: translate(4px); transition-delay: 0s, 0s, 0s, 180ms; }
+.sar-proj-menu { position: absolute; top: 34px; right: 4px; z-index: 6; min-width: 180px; padding: 4px;
+  border-radius: var(--dsw-radius-md); background: var(--dsw-alias-bg-layer-3);
+  box-shadow: var(--dsw-elevation-soft); }
+.sar-proj-menu-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;
+  padding: 6px 8px; border: 0; border-radius: var(--dsw-radius-sm); background: none;
+  color: var(--dsw-alias-label-primary); font: inherit; font-size: 13px; line-height: 20px;
+  text-align: start; cursor: pointer; }
+.sar-proj-menu-row:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.sar-proj-menu-row:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: -2px; }
+.sar-proj-list { display: flex; flex-direction: column; gap: 1px; flex: 1; min-height: 0; overflow-y: auto;
+  padding: 0 8px 16px; }
+.sar-proj-item { position: relative; box-sizing: border-box; display: flex; align-items: center; gap: 6px;
+  height: 34px; padding: 0 12px; border-radius: 12px; color: var(--dsw-alias-label-primary);
+  font-size: 14px; line-height: 20px; cursor: pointer; outline: none; }
+.sar-proj-item:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.sar-proj-item[aria-selected='true'] { background: var(--dsw-alias-interactive-bg-hover); }
+.sar-proj-item:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: -2px; }
+.sar-proj-item[data-archived='true'] .sar-proj-name { color: var(--dsw-alias-label-tertiary); }
+.sar-proj-pin { display: inline-flex; flex: none; align-items: center; margin-inline-start: 6px;
+  color: var(--dsw-alias-label-secondary); }
+/* A pinned row only changes the glyph; the buttons keep their places. */
+.sar-proj-act-pinned { color: var(--dsw-alias-label-secondary); }
+.sar-proj-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sar-proj-resting { flex: none; max-width: 50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 11px; line-height: 16px; color: var(--dsw-alias-label-caption); }
+.sar-proj-acts { position: absolute; top: 50%; right: 4px; display: none; align-items: center; gap: 2px;
+  transform: translateY(-50%); }
+/* The pin sits first inside the quick group, as it does in the harness row. */
+.sar-proj-quick { display: inline-flex; align-items: center; gap: 2px; }
+.sar-proj-item:hover .sar-proj-acts, .sar-proj-item:focus-within .sar-proj-acts,
+.sar-proj-item[data-menu='true'] .sar-proj-acts { display: flex; }
+.sar-proj-item:hover .sar-proj-resting, .sar-proj-item:focus-within .sar-proj-resting,
+.sar-proj-item[data-menu='true'] .sar-proj-resting { visibility: hidden; }
+.sar-proj-act { display: grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0;
+  border-radius: var(--dsw-radius-sm); background: none; color: var(--dsw-alias-label-tertiary); cursor: pointer; }
+.sar-proj-act:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+.sar-proj-act:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 1px; }
+.sar-proj-item-menu { position: absolute; top: 30px; right: 0; z-index: 7; min-width: 176px; padding: 4px;
+  border-radius: var(--dsw-radius-md); background: var(--dsw-alias-bg-layer-3);
+  box-shadow: var(--dsw-elevation-soft); }
+.sar-proj-menu-question { margin: 4px 8px; font-size: 12px; line-height: 18px; color: var(--dsw-alias-label-tertiary); }
+.sar-proj-menu-label { margin: 6px 8px 2px; font-size: 11px; line-height: 16px; color: var(--dsw-alias-label-caption); }
+.sar-proj-hint { margin: 8px 12px; font-size: 13px; line-height: 20px; color: var(--dsw-alias-label-tertiary); }
+
+/* ── chat groups tab, rendered inside the official right sidebar ─────────── */
+
+.sar-tabpane { box-sizing: border-box; height: 100%; display: flex; flex-direction: column; gap: 8px; padding: 8px; }
+.sar-tabrows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; overflow: auto; flex: 1; min-height: 0; }
+.sar-tabrow { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; column-gap: 8px; align-items: center; width: 100%; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: inherit; font: inherit; font-size: 13px; line-height: 20px; text-align: start; cursor: pointer; }
+.sar-tabrow:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.sar-tabrow[aria-current='true'] { background: var(--dsw-alias-interactive-bg-hover); font-weight: 500; }
+.sar-tabrow:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: -2px; }
+.sar-tabrow-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sar-tabrow-meta { font-size: 11px; line-height: 16px; color: var(--dsw-alias-label-caption); white-space: nowrap; }
+.sar-tabhint { margin: 0; font-size: 13px; line-height: 20px; color: var(--dsw-alias-label-tertiary); }
+.sar-tabrow-error { margin: 0; font-size: 12px; line-height: 18px; color: var(--dsw-alias-state-error-primary); }
+.sar-tabfoot { display: flex; gap: 6px; padding-top: 8px; border-top: 0.5px solid var(--dsw-alias-border-l2); }
+
+/* ── main column ─────────────────────────────────────────────────────────── */
+
+.sar-main { box-sizing: border-box; display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0;
+  min-height: 0; /* The same inset the sidebar takes: 6px vertical, 8px inline. */
+  padding: 6px 8px; }
+/* The shell draws a sidebar boundary on the neighbouring column, 0.5px border-l3. */
+.sar-root[data-projects='open'] .sar-main { border-inline-end: 0.5px solid var(--dsw-alias-border-l3); }
+
+.sar-head { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: 16px 24px 10px; }
+.sar-head-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.sar-title { margin: 0; font-size: 15px; line-height: 22px; font-weight: 600; color: var(--dsw-alias-label-secondary); }
+.sar-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sar-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 999px; font-size: 12px; line-height: 18px; color: var(--dsw-alias-label-tertiary); }
+.sar-pill-busy { border-color: transparent; background: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 12%, transparent); color: var(--dsw-alias-label-secondary); }
+/* The harness's right-sidebar control, at the header's far right. */
+.sar-expand { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--dsw-alias-label-secondary); cursor: pointer; }
+.sar-expand:hover { background: var(--dsw-alias-interactive-bg-hover); color: var(--dsw-alias-label-primary); }
+.sar-expand:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); outline-offset: 1px; }
+.sar-expand svg { width: 16px; height: 16px; }
+.sar-ws-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: 6px 24px 0; }
+.sar-ws-title { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.sar-h1 { margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; }
+.sar-h2 { margin: 0; font-size: 15px; line-height: 22px; font-weight: 600; }
+.sar-ws-meta { display: flex; align-items: baseline; gap: 4px 12px; flex-wrap: wrap; margin: 4px 0 0; padding: 0 24px; font-size: 12px; line-height: 18px; color: var(--dsw-alias-label-caption); }
+.sar-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.sar-chip { padding: 0 6px; border: 0.5px solid var(--dsw-alias-border-l3); border-radius: 6px; font-size: 11px; line-height: 16px; color: var(--dsw-alias-label-caption); }
+.sar-label { font-size: 12px; line-height: 18px; font-weight: 500; color: var(--dsw-alias-label-tertiary); }
+.sar-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.sar-blank { display: flex; flex-direction: column; gap: 10px; padding: 48px 24px; }
+
+/* ── view tabs, in the shape of the conversation view strip ──────────────── */
+
+.sar-views { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px 20px; padding: 0 24px; margin-top: 10px;
+  border-bottom: 0.5px solid var(--dsw-alias-border-l3); }
+.sar-view { --sar-tab-hit: 10px; position: relative; box-sizing: border-box; min-height: 35px; margin: 0 calc(-1 * var(--sar-tab-hit)); padding: 10px var(--sar-tab-hit) 9px; border: 0; background: none; color: var(--dsw-alias-label-tertiary); font: inherit; font-size: 13px; font-weight: 500; line-height: 16px; cursor: pointer; }
+.sar-view::after { content: ''; position: absolute; inset-inline: var(--sar-tab-hit); bottom: -1px; height: 2px; border-radius: 2px; }
+.sar-view:hover { color: var(--dsw-alias-label-secondary); }
+.sar-view[aria-selected='true'] { color: var(--dsw-alias-state-business-primary); }
+.sar-view[aria-selected='true']::after { background: var(--dsw-alias-state-business-primary); }
+.sar-view:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); outline-offset: 1px; border-radius: var(--dsw-radius-sm); }
+
+/* ── banners, task progress ──────────────────────────────────────────────── */
+
+.sar-banner { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 24px 0; padding: 8px 12px; border-radius: 10px; font-size: 13px; line-height: 20px; background: color-mix(in srgb, var(--dsw-alias-state-warn-primary) 10%, transparent); overflow-wrap: anywhere; }
+.sar-banner-error { background: color-mix(in srgb, var(--dsw-alias-state-error-primary) 10%, transparent); color: var(--dsw-alias-state-error-primary); }
+.sar-spin { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--dsw-alias-border-l4); border-top-color: var(--dsw-alias-brand-primary); animation: sar-spin 800ms linear infinite; }
+@keyframes sar-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .sar-spin { animation-duration: 2400ms; } }
+
+/* ── the conversation ────────────────────────────────────────────────────── */
+/* Layout of the conversation window lives in chat.css; this file keeps the chrome. */
+/* ── embedded Superagent panel ───────────────────────────────────────────── */
+
+.sar-panel { flex: 1; min-height: 0; overflow: hidden; }
+.sar-panel > .dt-page { height: 100%; padding-top: 12px; }
+
+/* ── dialogs ─────────────────────────────────────────────────────────────── */
+
+.sar-form { display: flex; flex-direction: column; gap: 14px; }
+.sar-field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 20px; }
+.sar-field small { color: var(--dsw-alias-label-caption); font-size: 12px; }
+.sar-import-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 0.5px solid var(--dsw-alias-border-l2); }
+.sar-import-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sar-import-profile { font-size: 13px; line-height: 20px; font-weight: 500; }
+.sar-detected { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; padding-top: 10px; border-top: 0.5px solid var(--dsw-alias-border-l2); max-width: 560px; }
+
+/* ── narrow panels ───────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .sar-head, .sar-ws-head { padding-inline: 16px; }
+  .sar-ws-meta, .sar-views { padding-inline: 16px; }
+}

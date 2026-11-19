@@ -1,0 +1,14 @@
+/*
+ * The button that opens the deployment's own DSH.
+ *
+ * The deployment UI itself opens in a top-level tab, where its launch token and
+ * its SameSite cookie are first party; nothing here styles that page. The button
+ * sits in the workspace action row and keeps its label on wide panels, where
+ * there is room for the three words.
+ */
+
+.sar-official-button { flex: none; }
+
+@media (max-width: 760px) {
+  .sar-official-button .dt-btn-icon { display: none; }
+}

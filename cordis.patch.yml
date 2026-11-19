@@ -1,0 +1,21 @@
+# @gamegeek-saikel/dsh-superagent-remote bundle layer: one row that mounts both halves.
+#
+# The host half owns the WSL2 bridge (distro lifecycle, per-workspace DSH
+# profile and service), the reverse proxy onto each deployment's
+# /orchestrator/api, and the GitHub-backed chat bridge. The browser half adds the
+# Superagent sidebar entry and its panel, declared through package.json
+# `dsh.client`.
+#
+# Every field of the config below is optional; the defaults target the layout in
+# docs/002-runbook.md. Install with:
+#   dsh plugin --profile web add link:<this directory>
+- insert:
+    - id: superagent-remote
+      name: '@gamegeek-saikel/dsh-superagent-remote'
+      # config:
+      #   distro: Ubuntu-22.04        # WSL2 distribution that hosts dsh-superagent
+      #   wslUser: root               # user that runs the deployments and reads their state
+      #   checkout: /root/dsh-superagent
+      #   agentCli: /root/.local/bin/gh-agent
+      #   portBase: 3083              # first port offered to a new workspace
+      #   terminateWslOnExit: owned   # owned | always | never

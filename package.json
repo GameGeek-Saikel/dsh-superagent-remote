@@ -1,0 +1,91 @@
+{
+  "name": "@gamegeek-saikel/dsh-superagent-remote",
+  "description": "Windows-side DeepSeek Harness plugin that runs and supervises dsh-superagent deployments inside WSL2: one workspace per GitHub repository, a DSH-native conversation per workspace, and the upstream dt-column panel proxied to each deployment.",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit --pretty false",
+    "test": "vitest run",
+    "check": "pnpm typecheck && pnpm test && pnpm build"
+  },
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "src",
+    "cordis.patch.yml",
+    "docs",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-sidebar-right"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.6-alpha.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "~4.0.6-alpha.2",
+    "@deepseek-ai/dsh-api-session-controller": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-locale": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-layout": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-plugin-manager": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-renderer": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-settings": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-sidebar": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-sidebar-right": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-client-ui-workspace": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-host-webserver": "0.2.2-alpha.3",
+    "@types/node": "^22.20.1",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
+    "jsdom": "29.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsdown": "^0.22.14",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GameGeek-Saikel/dsh-superagent-remote.git"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "superagent",
+    "wsl2",
+    "github"
+  ]
+}
