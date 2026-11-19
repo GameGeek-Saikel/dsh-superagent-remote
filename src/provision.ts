@@ -248,21 +248,23 @@ async function ensureClone(wsl: Wsl, workspace: Workspace, cloneDir: string, ste
 }
 
 /**
+ * Hosts the distribution reaches without the operator's HTTP proxy.
+ *
+ * GitHub's API answers directly from the distribution; routing it through a local
+ * proxy fails the Source's GraphQL polling with a TLS handshake timeout whenever
+ * that proxy is slow to finish the handshake. `github.com` stays out of this list:
+ * it is git's transport, and a direct request to it ends mid-TLS wherever the
+ * network interferes with the connection, which fails every ticket's prepare.
+ */
+const GITHUB_DIRECT = 'api.github.com,codeload.github.com,objects.githubusercontent.com,raw.githubusercontent.com,avatars.githubusercontent.com'
+
+/**
  * Start one deployment and wait for its runtime to answer.
  * @param wsl - the distribution bridge.
  * @param config - resolved plugin configuration.
  * @param workspace - the workspace to start.
  * @returns the failure in one line, or undefined when it started.
  */
-/**
- * Hosts the distribution reaches without the operator's HTTP proxy.
- *
- * GitHub answers directly from the distribution; routing it through a local proxy
- * fails the Source's GraphQL polling with a TLS handshake timeout whenever that
- * proxy is slow to finish the handshake.
- */
-const GITHUB_DIRECT = 'github.com,api.github.com,codeload.github.com,objects.githubusercontent.com,raw.githubusercontent.com,avatars.githubusercontent.com'
-
 export async function startService(wsl: Wsl, config: ResolvedConfig, workspace: Workspace): Promise<string | undefined> {
   // tmux keeps its own environment, so the bypass is published there as well as
   // exported for the shell that starts the service.

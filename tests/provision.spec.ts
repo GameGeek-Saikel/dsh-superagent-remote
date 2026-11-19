@@ -112,10 +112,13 @@ describe('starting a deployment', () => {
     await expect(startService(wsl, config, workspace)).resolves.toContain('tmux')
   })
 
-  it('lets GitHub bypass the operator proxy', async () => {
+  it('lets the GitHub API bypass the operator proxy while git keeps the proxy', async () => {
     const script = await commandOf()
-    expect(script).toContain('no_proxy="github.com,api.github.com')
-    expect(script).toContain('NO_PROXY="github.com,api.github.com')
+    expect(script).toContain('no_proxy="api.github.com,codeload.github.com')
+    expect(script).toContain('NO_PROXY="api.github.com,codeload.github.com')
+    // github.com carries git: a direct request dies mid-TLS where the network interferes with it.
+    expect(script).not.toContain('no_proxy="github.com,')
+    expect(script).not.toContain('NO_PROXY="github.com,')
     // The bypass has to exist in tmux's own environment too: a long-lived server
     // hands its environment to every session it starts.
     expect(script).toContain('tmux set-environment -g no_proxy')
